@@ -1,0 +1,16 @@
+{
+  "spark": {
+    "master": "local[*]",
+    "app_name": "SPARK_ML_POC"
+  },
+  "kafka": {
+    "brokers": "hadoop31.clairvoyant.local:9092,hadoop32.clairvoyant.local:9092,hadoop33.clairvoyant.local:9092",
+    "group_id": "spark_ml_testing",
+    "consumer_topic": "spark_ml_testing",
+    "producer_topic": "spark_ml_testing",
+    "auto_offset_reset": "earliest"
+  },
+  "hdfs": {
+    "storage_location": "/user/clairvoyant/Spark_ML_POC"
+  }
+}
