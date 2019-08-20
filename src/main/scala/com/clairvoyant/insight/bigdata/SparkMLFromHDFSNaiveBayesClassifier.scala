@@ -54,7 +54,7 @@ object SparkMLFromHDFSNaiveBayesClassifier {
     val Array(trainingData, testData) = outdata.randomSplit(Array(0.7, 0.3))
 
     // Train a RandomForest model.
-    val nbClassifier = new NaiveBayes()
+    val nbClassifier = new NaiveBayes().setLabelCol("indexedFlower")
 
     // Convert indexed labels back to original labels.
     val labelConverter = new IndexToString()
