@@ -1,7 +1,7 @@
 {
   "spark": {
     "master": "local[*]",
-    "app_name": "SPARK_ML_POC"
+    "app_name": "SPARK_STREAMING_TO_HDFS"
   },
   "kafka": {
     "brokers": "hadoop31.clairvoyant.local:9092,hadoop32.clairvoyant.local:9092,hadoop33.clairvoyant.local:9092",
@@ -11,10 +11,11 @@
     "auto_offset_reset": "earliest"
   },
   "hdfs": {
-    "storage_location": "/user/clairvoyant/Spark_ML_POC"
+    "storage_location": "/user/clairvoyant/Spark_ML_POC/flower_data"
   },
   "ml": {
-    "dataset_path": "./flower_dataset.csv",
+    "app_name": "SPARK_ML",
+    "dataset_path": "hdfs:///user/clairvoyant/Spark_ML_POC/flower_data/*.csv",
     "classifier": "RandomForest"
   }
 }

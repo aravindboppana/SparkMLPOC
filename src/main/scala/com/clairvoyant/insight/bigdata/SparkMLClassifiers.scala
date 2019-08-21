@@ -19,7 +19,7 @@ object SparkMLClassifiers {
     val config: Config = ConfigFactory.load("application.json")
 
     val SPARK_MASTER = config.getString("spark.master")
-    val SPARK_APP_NAME = config.getString("spark.app_name")
+    val SPARK_APP_NAME = config.getString("ml.app_name")
     val DATASET_PATH = config.getString("ml.dataset_path")
     val CLASSIFIER = config.getString("ml.classifier")
 

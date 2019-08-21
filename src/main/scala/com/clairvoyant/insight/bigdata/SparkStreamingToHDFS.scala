@@ -28,7 +28,7 @@ object SparkStreamingToHDFS {
 
     val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFS.getClass.getName)
 
-    val sparkConf = new SparkConf().setAppName(SPARK_APP_NAME)//.setMaster(SPARK_MASTER)
+    val sparkConf = new SparkConf().setAppName(SPARK_APP_NAME).setMaster(SPARK_MASTER)
     val sparkStreamingContext = new StreamingContext(sparkConf, Seconds(30))
 //    sparkStreamingContext.sparkContext.setLogLevel("ERROR")
 
