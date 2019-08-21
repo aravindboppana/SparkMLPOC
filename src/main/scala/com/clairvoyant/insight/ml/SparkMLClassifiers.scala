@@ -1,4 +1,4 @@
-package com.clairvoyant.insight.bigdata
+package com.clairvoyant.insight.ml
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.ml.Pipeline
