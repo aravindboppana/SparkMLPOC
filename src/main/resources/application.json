@@ -12,5 +12,9 @@
   },
   "hdfs": {
     "storage_location": "/user/clairvoyant/Spark_ML_POC"
+  },
+  "ml": {
+    "dataset_path": "./flower_dataset.csv",
+    "classifier": "RandomForest"
   }
 }
