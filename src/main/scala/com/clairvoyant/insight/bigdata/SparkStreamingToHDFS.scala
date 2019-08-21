@@ -18,6 +18,7 @@ object SparkStreamingToHDFS {
 
     val SPARK_APP_NAME: String = config.getString("spark.app_name")
     val SPARK_MASTER: String = config.getString("spark.master")
+    val SPARK_BATCH_DURATION: Int = config.getInt("spark.batch_duration")
 
     val KAFKA_TOPICS: String = config.getString("kafka.consumer_topic")
     val KAFKA_BROKERS: String = config.getString("kafka.brokers")
@@ -29,8 +30,7 @@ object SparkStreamingToHDFS {
     val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFS.getClass.getName)
 
     val sparkConf = new SparkConf().setAppName(SPARK_APP_NAME).setMaster(SPARK_MASTER)
-    val sparkStreamingContext = new StreamingContext(sparkConf, Seconds(30))
-//    sparkStreamingContext.sparkContext.setLogLevel("ERROR")
+    val sparkStreamingContext = new StreamingContext(sparkConf, Seconds(SPARK_BATCH_DURATION))
 
     val spark = SparkSession.builder.config(sparkConf).getOrCreate()
     import spark.implicits._

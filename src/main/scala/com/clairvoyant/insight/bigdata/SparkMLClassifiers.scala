@@ -141,6 +141,7 @@ object SparkMLClassifiers {
     val predictions = model.transform(testData)
 
     predictions.show()
+    LOGGER.info("Count: " + predictions.count().toString)
 
     val evaluator = new MulticlassClassificationEvaluator()
       .setLabelCol("indexedFlower")
