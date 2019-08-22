@@ -9,19 +9,21 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.udf
 import org.slf4j.{Logger, LoggerFactory}
 
-object SparkMLClassifiersFromHDFS {
+object SparkMLModelTraining {
 
     def main(args: Array[String]): Unit = {
 
-        val LOGGER: Logger = LoggerFactory.getLogger(SparkMLClassifiersFromHDFS.getClass.getName)
+        val LOGGER: Logger = LoggerFactory.getLogger(SparkMLModelTraining.getClass.getName)
 
         // Load values form the Config file(application.json)
         val config: Config = ConfigFactory.load("application.json")
 
         val SPARK_MASTER = config.getString("spark.master")
         val SPARK_APP_NAME = config.getString("ml.app_name")
+
         val DATASET_PATH = config.getString("ml.dataset_path")
         val ML_CLASSIFIER = config.getString("ml.classifier")
+        val MODEL_SAVING_LOCATION = config.getString("ml.model_saving_location")
 
         val spark = SparkSession
                 .builder
@@ -136,6 +138,8 @@ object SparkMLClassifiersFromHDFS {
 
         // Train model. This also runs the indexers.
         val model = pipeline.fit(trainingData)
+
+        model.save(MODEL_SAVING_LOCATION + "/" + ML_CLASSIFIER)
 
         // Make predictions.
         val predictions = model.transform(testData)
