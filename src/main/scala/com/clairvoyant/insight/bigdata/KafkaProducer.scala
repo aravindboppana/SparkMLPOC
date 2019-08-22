@@ -27,17 +27,17 @@ object KafkaProducer {
         val TOPIC = KAFKA_TOPIC
 
         val SetosaSepalLengthsRange = Set(5.89, 5.90, 5.91, 5.92, 5.93)
-        val SetosaPetalLengthsRange = Set(1.43, 1.44, 1.45, 1.46, 1.47)
-        val SetosaSepalWidthsRange = Set(3.37, 3.38, 3.39, 3.40, 3.41)
-        val SetosaPetalWidthsRange = Set(0.21, 0.22, 0.23, 0.24, 0.25)
+        val SetosaPetalLengthsRange = Set(4.25, 4.26, 4.27, 4.28, 4.29)
+        val SetosaSepalWidthsRange = Set(2.75, 2.76, 2.77, 2.78, 2.79)
+        val SetosaPetalWidthsRange = Set(1.29, 1.30, 1.31, 1.32, 1.33)
 
         val VersicolorSepalLengthsRange = Set(5.92, 5.93, 5.94, 5.95, 5.96)
         val VersicolorPetalLengthsRange = Set(4.25, 4.26, 4.27, 4.28, 4.29)
         val VersicolorSepalWidthsRange = Set(2.75, 2.76, 2.77, 2.78, 2.79)
         val VersicolorPetalWidthsRange = Set(1.32, 1.33, 1.34, 1.35, 1.36)
 
-        val VirginicaSepalLengthsRange = Set(6.62, 6.63, 6.64, 6.65, 6.66)
-        val VirginicaPetalLengthsRange = Set(5.59, 5.60, 5.61, 5.62, 5.63)
+        val VirginicaSepalLengthsRange = Set(5.94, 5.95, 5.96, 5.97, 5.98)
+        val VirginicaPetalLengthsRange = Set(4.23, 4.24, 4.25, 4.26, 4.27)
         val VirginicaSepalWidthsRange = Set(2.99, 3.0, 3.01, 3.02, 3.03)
         val VirginicaPetalWidthsRange = Set(2.02, 2.03, 2.04, 2.05, 2.06)
 
@@ -74,7 +74,7 @@ object KafkaProducer {
             producer.send(virginica_record)
             println("Pushed Virginica Record: " + VirginicaKafkaRecord)
 
-            Thread.sleep(10000)
+            Thread.sleep(10)
         }
         producer.close()
 
