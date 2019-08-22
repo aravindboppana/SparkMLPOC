@@ -23,7 +23,7 @@ object SparkMLModelTraining {
 
         val DATASET_PATH = config.getString("ml.dataset_path")
         val ML_CLASSIFIER = config.getString("ml.classifier")
-        val MODEL_SAVING_LOCATION = config.getString("ml.model_saving_location")
+        val MODEL_SAVING_LOCATION = config.getString("ml.model_location")
 
         val spark = SparkSession
                 .builder

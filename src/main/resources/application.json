@@ -17,7 +17,7 @@
   "ml": {
     "app_name": "SPARK_ML",
     "dataset_path": "hdfs:///user/clairvoyant/Spark_ML_POC/flower_data/*.csv",
-    "classifier": "RandomForest",
-    "model_saving_location": "/user/clairvoyant/Spark_ML_POC"
+    "classifier": "DecisionTree",
+    "model_location": "/user/clairvoyant/Spark_ML_POC"
   }
 }
