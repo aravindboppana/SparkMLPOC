@@ -84,7 +84,7 @@ object SparkMLClassifiersFromKafka {
                 LOGGER.info("Count: " + predictions.count().toString)
 
                 val evaluator = new MulticlassClassificationEvaluator()
-                        .setLabelCol("indexedFlower")
+//                        .setLabelCol("indexedFlower")
                         .setPredictionCol("prediction")
                         .setMetricName("accuracy")
                 val accuracy = evaluator.evaluate(predictions)
