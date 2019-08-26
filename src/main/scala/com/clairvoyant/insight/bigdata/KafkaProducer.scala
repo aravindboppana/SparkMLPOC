@@ -74,7 +74,7 @@ object KafkaProducer {
             producer.send(virginica_record)
             println("Pushed Virginica Record: " + VirginicaKafkaRecord)
 
-            Thread.sleep(10)
+            Thread.sleep(100)
         }
         producer.close()
 

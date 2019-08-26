@@ -64,19 +64,23 @@ object SparkStreamingToHDFSAndKUDU {
 
                 df.write.mode("append").format("parquet").option("header", "true").csv(HDFS_STORAGE_LOCATION)
 
+                LOGGER.info("Loaded Data to HDFS")
+
                 if (!kuduContext.tableExists("impala::" + KUDU_TABLE_NAME)) {
                     LOGGER.warn("Table doesn't Exist")
                     System.exit(1)
                 }
 
                 // Load Data to Kudu
-                df = df.withColumn("index", functions.monotonically_increasing_id)
+                df = df.withColumn("id", functions.monotonically_increasing_id)
                 df = df.withColumnRenamed("SepalLength", "sepal_length")
                         .withColumnRenamed("PetalLength", "petal_length")
                         .withColumnRenamed("SepalWidth", "sepal_width")
                         .withColumnRenamed("PetalWidth", "petal_width")
 
                 kuduContext.upsertRows(df, "impala::" + KUDU_TABLE_NAME)
+
+                LOGGER.info("Loaded Data to KUDU Table")
 
             }
         })

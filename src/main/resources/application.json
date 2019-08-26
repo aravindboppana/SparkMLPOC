@@ -16,7 +16,7 @@
   },
   "kudu" : {
     "master": "hadoop32.clairvoyant.local:7051",
-    "table_name": "default."
+    "table_name": "spark_ml_poc.flower_data"
   },
   "ml": {
     "app_name": "SPARK_ML",
