@@ -51,6 +51,9 @@ object SparkMLClassifiersFromKafka {
 
         val kafkaStream = KafkaUtils.createDirectStream[String, String](sparkStreamingContext, PreferConsistent, ConsumerStrategies.Subscribe[String, String](topicsSet, kafkaParams))
 
+        // Load Model from HDFS
+        val model = PipelineModel.load(MODEL_LOCATION + "/" + ML_CLASSIFIER)
+
         kafkaStream.map(message => {
             message.value().toString
         }).foreachRDD(rdd => {
@@ -74,17 +77,14 @@ object SparkMLClassifiersFromKafka {
                 transformed_data.show()
                 transformed_data.printSchema()
 
-                // Load Model from HDFS
-                val model = PipelineModel.load(MODEL_LOCATION + "/" + ML_CLASSIFIER)
-
-                // Make predictions.
+                // Make predictions
                 val predictions = model.transform(transformed_data)
 
                 predictions.show()
                 LOGGER.info("Count: " + predictions.count().toString)
 
                 val evaluator = new MulticlassClassificationEvaluator()
-//                        .setLabelCol("indexedFlower")
+                        .setLabelCol("indexedFlower")
                         .setPredictionCol("prediction")
                         .setMetricName("accuracy")
                 val accuracy = evaluator.evaluate(predictions)
