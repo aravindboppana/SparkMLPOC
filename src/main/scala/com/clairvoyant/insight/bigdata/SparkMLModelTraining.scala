@@ -34,6 +34,7 @@ object SparkMLModelTraining {
 
         val data = spark.read.format("csv").option("header", "true").load(DATASET_PATH)
 
+        // Cast to Double datatype
         val df = data.withColumn("PetalLength", $"PetalLength".cast(sql.types.DoubleType))
                 .withColumn("PetalWidth", $"PetalWidth".cast(sql.types.DoubleType))
                 .withColumn("SepalLength", $"SepalLength".cast(sql.types.DoubleType))
