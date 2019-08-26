@@ -17,6 +17,8 @@ object SparkMLClassifiersFromKafka {
 
     def main(args: Array[String]): Unit = {
 
+        val LOGGER: Logger = LoggerFactory.getLogger(SparkMLClassifiersFromKafka.getClass.getName)
+
         // Load values form the Config file(application.json)
         val config: Config = ConfigFactory.load("application.json")
 
@@ -31,8 +33,6 @@ object SparkMLClassifiersFromKafka {
 
         val ML_CLASSIFIER = config.getString("ml.classifier")
         val MODEL_LOCATION = config.getString("ml.model_location")
-
-        val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFS.getClass.getName)
 
         val sparkConf = new SparkConf().setAppName(SPARK_APP_NAME).setMaster(SPARK_MASTER)
         val sparkStreamingContext = new StreamingContext(sparkConf, Seconds(SPARK_BATCH_DURATION))

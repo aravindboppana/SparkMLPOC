@@ -14,6 +14,10 @@
   "hdfs": {
     "storage_location": "/user/clairvoyant/Spark_ML_POC/flower_data"
   },
+  "kudu" : {
+    "master": "hadoop32.clairvoyant.local:7051",
+    "table_name": "default."
+  },
   "ml": {
     "app_name": "SPARK_ML",
     "dataset_path": "hdfs:///user/clairvoyant/Spark_ML_POC/flower_data/*.csv",

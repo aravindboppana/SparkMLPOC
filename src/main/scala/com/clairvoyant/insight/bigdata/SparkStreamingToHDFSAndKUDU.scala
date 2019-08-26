@@ -2,16 +2,19 @@ package com.clairvoyant.insight.bigdata
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.kudu.spark.kudu.KuduContext
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SparkSession, functions}
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils}
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.slf4j.{Logger, LoggerFactory}
 
-object SparkStreamingToHDFS {
+object SparkStreamingToHDFSAndKUDU {
 
     def main(args: Array[String]): Unit = {
+
+        val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFSAndKUDU.getClass.getName)
 
         // Load values form the Config file(application.json)
         val config: Config = ConfigFactory.load("application.json")
@@ -25,12 +28,15 @@ object SparkStreamingToHDFS {
         val KAFKA_GROUP_ID: String = config.getString("kafka.group_id")
         val KAFKA_OFFSET_RESET: String = config.getString("kafka.auto_offset_reset")
 
-        val HDFS_STORAGE_LOCATION: String = config.getString("hdfs.storage_location")
+        val KUDU_MASTER: String = config.getString("kudu.master")
+        val KUDU_TABLE_NAME: String = config.getString("kudu.table_name")
 
-        val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFS.getClass.getName)
+        val HDFS_STORAGE_LOCATION: String = config.getString("hdfs.storage_location")
 
         val sparkConf = new SparkConf().setAppName(SPARK_APP_NAME).setMaster(SPARK_MASTER)
         val sparkStreamingContext = new StreamingContext(sparkConf, Seconds(SPARK_BATCH_DURATION))
+        val sc = sparkStreamingContext.sparkContext
+        val kuduContext = new KuduContext(KUDU_MASTER, sc)
 
         val spark = SparkSession.builder.config(sparkConf).getOrCreate()
         import spark.implicits._
@@ -51,12 +57,26 @@ object SparkStreamingToHDFS {
         }).foreachRDD(rdd => {
             if (!rdd.isEmpty()) {
 
-                val df = spark.read.json(rdd.toDS())
+                var df = spark.read.json(rdd.toDS())
 
                 df.printSchema()
                 df.show()
 
-                df.write.mode("append").option("header", "true").csv(HDFS_STORAGE_LOCATION)
+                df.write.mode("append").format("parquet").option("header", "true").csv(HDFS_STORAGE_LOCATION)
+
+                if (!kuduContext.tableExists("impala::" + KUDU_TABLE_NAME)) {
+                    LOGGER.warn("Table doesn't Exist")
+                    System.exit(1)
+                }
+
+                // Load Data to Kudu
+                df = df.withColumn("index", functions.monotonically_increasing_id)
+                df = df.withColumnRenamed("SepalLength", "sepal_length")
+                        .withColumnRenamed("PetalLength", "petal_length")
+                        .withColumnRenamed("SepalWidth", "sepal_width")
+                        .withColumnRenamed("PetalWidth", "petal_width")
+
+                kuduContext.upsertRows(df, "impala::" + KUDU_TABLE_NAME)
 
             }
         })

@@ -13,11 +13,12 @@
         <scala.version>2.11.8</scala.version>
         <scala.simple.version>2.11</scala.simple.version>
         <spark.version>2.3.0.cloudera4</spark.version>
+        <kudu_spark.version>1.6.0-cdh5.14.2</kudu_spark.version>
         <kafka.version>0.11.0.1</kafka.version>
         <args4j.version>2.32</args4j.version>
         <slf4j.version>1.7.21</slf4j.version>
 
-        <main.class>com.clairvoyant.insight.bigdata.SparkStreamingToHDFS</main.class>
+        <main.class>com.clairvoyant.insight.bigdata.SparkStreamingToHDFSAndKUDU</main.class>
 
     </properties>
 
@@ -63,6 +64,13 @@
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-mllib_${scala.simple.version}</artifactId>
             <version>${spark.version}</version>
+        </dependency>
+
+        <!-- KUDU -->
+        <dependency>
+            <groupId>org.apache.kudu</groupId>
+            <artifactId>kudu-spark2_${scala.simple.version}</artifactId>
+            <version>${kudu_spark.version}</version>
         </dependency>
 
 
