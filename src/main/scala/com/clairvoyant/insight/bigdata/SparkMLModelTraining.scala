@@ -4,8 +4,8 @@ import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.{DecisionTreeClassifier, LogisticRegression, NaiveBayes, RandomForestClassifier}
 import org.apache.spark.ml.feature.{IndexToString, StringIndexer, VectorAssembler, VectorIndexer}
+import org.apache.spark.sql
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.udf
 import org.slf4j.{Logger, LoggerFactory}
 
 object SparkMLModelTraining {
@@ -30,11 +30,14 @@ object SparkMLModelTraining {
                 .appName(SPARK_APP_NAME)
                 .getOrCreate()
 
+        import spark.implicits._
+
         val data = spark.read.format("csv").option("header", "true").load(DATASET_PATH)
 
-        val toDouble = udf[Double, String](_.toDouble)
-
-        val df = data.withColumn("PetalLength", toDouble(data("PetalLength"))).withColumn("PetalWidth", toDouble(data("PetalWidth"))).withColumn("SepalLength", toDouble(data("SepalLength"))).withColumn("SepalWidth", toDouble(data("SepalWidth")))
+        val df = data.withColumn("PetalLength", $"PetalLength".cast(sql.types.DoubleType))
+                .withColumn("PetalWidth", $"PetalWidth".cast(sql.types.DoubleType))
+                .withColumn("SepalLength", $"SepalLength".cast(sql.types.DoubleType))
+                .withColumn("SepalWidth", $"SepalWidth".cast(sql.types.DoubleType))
 
         val assembler = new VectorAssembler()
                 .setInputCols(Array("PetalLength", "PetalWidth", "SepalLength", "SepalWidth"))

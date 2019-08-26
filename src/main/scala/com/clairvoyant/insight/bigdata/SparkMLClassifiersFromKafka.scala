@@ -2,15 +2,14 @@ package com.clairvoyant.insight.bigdata
 
 import com.typesafe.config.{Config, ConfigFactory}
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.SparkConf
 import org.apache.spark.ml.PipelineModel
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.udf
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
+import org.apache.spark.{SparkConf, sql}
 import org.slf4j.{Logger, LoggerFactory}
 
 object SparkMLClassifiersFromKafka {
@@ -64,9 +63,10 @@ object SparkMLClassifiersFromKafka {
                 data.printSchema()
                 data.show()
 
-                val toDouble = udf[Double, String](_.toDouble)
-
-                val df = data.withColumn("PetalLength", toDouble(data("PetalLength"))).withColumn("PetalWidth", toDouble(data("PetalWidth"))).withColumn("SepalLength", toDouble(data("SepalLength"))).withColumn("SepalWidth", toDouble(data("SepalWidth")))
+                val df = data.withColumn("PetalLength", $"PetalLength".cast(sql.types.DoubleType))
+                        .withColumn("PetalWidth", $"PetalWidth".cast(sql.types.DoubleType))
+                        .withColumn("SepalLength", $"SepalLength".cast(sql.types.DoubleType))
+                        .withColumn("SepalWidth", $"SepalWidth".cast(sql.types.DoubleType))
 
                 val assembler = new VectorAssembler()
                         .setInputCols(Array("PetalLength", "PetalWidth", "SepalLength", "SepalWidth"))
