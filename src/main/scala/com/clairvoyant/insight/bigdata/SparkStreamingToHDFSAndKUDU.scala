@@ -62,7 +62,7 @@ object SparkStreamingToHDFSAndKUDU {
                 df.printSchema()
                 df.show()
 
-                df.write.mode("append").format("parquet").option("header", "true").csv(HDFS_STORAGE_LOCATION)
+                df.write.mode("append").parquet(HDFS_STORAGE_LOCATION)
 
                 LOGGER.info("Loaded Data to HDFS")
 

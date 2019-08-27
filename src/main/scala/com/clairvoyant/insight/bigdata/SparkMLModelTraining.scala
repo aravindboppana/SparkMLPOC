@@ -32,7 +32,7 @@ object SparkMLModelTraining {
 
         import spark.implicits._
 
-        val data = spark.read.format("csv").option("header", "true").load(DATASET_PATH)
+        val data = spark.read.parquet(DATASET_PATH)
 
         // Cast to Double datatype
         val df = data.withColumn("PetalLength", $"PetalLength".cast(sql.types.DoubleType))
