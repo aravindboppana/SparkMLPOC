@@ -137,7 +137,7 @@ object SparkMLModelTraining {
         // Train model. This also runs the indexers.
         val model = pipeline.fit(transformed_data)
 
-        model.save(MODEL_SAVING_LOCATION + "/" + ML_CLASSIFIER)
+        model.write.overwrite().save(MODEL_SAVING_LOCATION + "/" + ML_CLASSIFIER)
 
         LOGGER.info("Successfully Saved " + ML_CLASSIFIER + " Model")
 
