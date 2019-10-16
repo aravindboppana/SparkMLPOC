@@ -12,7 +12,7 @@
     "auto_offset_reset": "earliest"
   },
   "hdfs": {
-    "storage_location": "/user/clairvoyant/Spark_ML_POC/flower_data"
+    "storage_location": "/user/clairvoyant/Spark_Compaction"
   },
   "kudu" : {
     "master": "hadoop32.clairvoyant.local:7051",

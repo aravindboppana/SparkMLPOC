@@ -14,9 +14,9 @@ import org.slf4j.{Logger, LoggerFactory}
 
 object SparkMLClassifiersFromKafka {
 
-    def main(args: Array[String]): Unit = {
+    val LOGGER: Logger = LoggerFactory.getLogger(SparkMLClassifiersFromKafka.getClass.getName)
 
-        val LOGGER: Logger = LoggerFactory.getLogger(SparkMLClassifiersFromKafka.getClass.getName)
+    def main(args: Array[String]): Unit = {
 
         // Load values form the Config file(application.json)
         val config: Config = ConfigFactory.load("application.json")

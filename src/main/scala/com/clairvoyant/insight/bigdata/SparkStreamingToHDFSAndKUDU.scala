@@ -12,9 +12,9 @@ import org.slf4j.{Logger, LoggerFactory}
 
 object SparkStreamingToHDFSAndKUDU {
 
-    def main(args: Array[String]): Unit = {
+    val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFSAndKUDU.getClass.getName)
 
-        val LOGGER: Logger = LoggerFactory.getLogger(SparkStreamingToHDFSAndKUDU.getClass.getName)
+    def main(args: Array[String]): Unit = {
 
         // Load values form the Config file(application.json)
         val config: Config = ConfigFactory.load("application.json")
@@ -66,19 +66,19 @@ object SparkStreamingToHDFSAndKUDU {
 
                 LOGGER.info("Loaded Data to HDFS")
 
-                if (!kuduContext.tableExists("impala::" + KUDU_TABLE_NAME)) {
-                    LOGGER.warn("Table doesn't Exist")
-                    System.exit(1)
-                }
+//                if (!kuduContext.tableExists("impala::" + KUDU_TABLE_NAME)) {
+//                    LOGGER.warn("Table doesn't Exist")
+//                    System.exit(1)
+//                }
+//
+//                // Load Data to Kudu
+//                df = df.withColumn("id", functions.monotonically_increasing_id)
+//                df = df.withColumnRenamed("SepalLength", "sepal_length")
+//                        .withColumnRenamed("PetalLength", "petal_length")
+//                        .withColumnRenamed("SepalWidth", "sepal_width")
+//                        .withColumnRenamed("PetalWidth", "petal_width")
 
-                // Load Data to Kudu
-                df = df.withColumn("id", functions.monotonically_increasing_id)
-                df = df.withColumnRenamed("SepalLength", "sepal_length")
-                        .withColumnRenamed("PetalLength", "petal_length")
-                        .withColumnRenamed("SepalWidth", "sepal_width")
-                        .withColumnRenamed("PetalWidth", "petal_width")
-
-                kuduContext.upsertRows(df, "impala::" + KUDU_TABLE_NAME)
+//                kuduContext.upsertRows(df, "impala::" + KUDU_TABLE_NAME)
 
                 LOGGER.info("Loaded Data to KUDU Table")
 
